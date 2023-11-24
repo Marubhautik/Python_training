@@ -1,7 +1,5 @@
 import re
 import datetime
-
-
 class Customer:
     def __init__(self, name, email, phone, street, city, state, country, company, type):
         self.name = name
@@ -25,7 +23,6 @@ class Customer:
     def validate_email(self):
         if not re.match(r"^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", self.email):
             print("Invalid email address format")
-
 
     def validate_name_city_state_country(self, field_name):
         if re.search(r"\d", field_name):
@@ -71,9 +68,7 @@ class OrderLine:
 
 class Order:
     def __init__(self, number, date, company, billing, shipping, order_lines):
-
         self.number = number
-
         if date < datetime.date.today():
             print("Order date cannot be in the past.")
         self.date = date
@@ -100,20 +95,23 @@ class Order:
             order_line.display_details()
         print("Total Amount:", self.total_amount)
 
-    def filter_orders_for_current_month(self,orders):
+        # Sort orders based on "date"
+    def sort_orders_by_date(self, orders):
+        return sorted(orders, key=lambda order: order.date)
+
+        # Filter orders for the current month
+    def filter_orders_for_current_month(self, orders):
         current_month = datetime.date.today().month
         filtered_orders = [order for order in orders if order.date.month == current_month]
         return filtered_orders
 
         # Search orders from their number
-
-    def search_orders_by_number(orders, order_number):
+    def search_orders_by_number(self, orders, order_number):
         matching_orders = [order for order in orders if order.number == order_number]
         return matching_orders
 
         # List all orders of a specific product
-
-    def list_orders_by_product(orders, product):
+    def list_orders_by_product(self, orders, product):
         matching_orders = [order for order in orders for order_line in order.order_lines if
                            order_line.product == product]
         return matching_orders
@@ -144,6 +142,13 @@ order3.display_order_details()
 # order_line2 = OrderLine(order1, "Computer", 1,2000)
 #
 # order_lines = [order_line1, order_line2]
-print('------------------')
+orders = [order3,order2,order1]
+for a in order1.sort_orders_by_date(orders):
+    print(a.date)
+
+print('\nFilter orders for the current month')
+orders = [order3,order2,order1]
+for a in order1.filter_orders_for_current_month(orders):
+    print(a.date)
 
 
